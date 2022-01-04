@@ -1,0 +1,34 @@
+{# On suppose qu'on a un routeur par SDIS #}
+hostname SDIS-R{{ SDISID+1 }}
+!
+interface FastEthernet0/0
+ ip address 172.16.{{ SDISID+4 }}{{ SDISID+1 }}.1 255.255.255.252
+!
+interface FastEthernet0/1
+ ip address 164.4.{{ SDISID+1 }}.254 255.255.255.0
+ ip helper-address 172.16.31.1
+ ip helper-address 172.16.11.2
+!
+ip route 0.0.0.0 0.0.0.0 FastEthernet0/0
+!
+{# Pour sécuriser l'accès #}
+service password-encryption
+enable secret enable
+username admin privilege 15 secret admin
+ip domain-name cpe.fr
+crypto key generate rsa modulus 1024
+ip ssh version 2
+ip ssh authentication-retries 3
+ip ssh time-out 120
+line vty 0 4
+login local
+transport input ssh
+exec-timeout 3
+line console 0
+login local
+exec-timeout 3
+banner login "Warning! Authorized personnel only."
+login block-for 10 attempts 3 within 20
+login delay 10
+login on-failure log
+login on-success log 
