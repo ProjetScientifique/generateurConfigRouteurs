@@ -2,9 +2,11 @@
 hostname SDIS-R{{ SDISID+1 }}
 !
 interface FastEthernet0/0
+ no shutdown
  ip address 172.16.{{ SDISID+4 }}{{ SDISID+1 }}.1 255.255.255.252
 !
 interface FastEthernet0/1
+ no shutdown
  ip address 164.4.{{ SDISID+1 }}.254 255.255.255.0
  ip helper-address 172.16.31.1
  ip helper-address 172.16.11.2
