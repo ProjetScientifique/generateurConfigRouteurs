@@ -20,7 +20,7 @@ Tous les routeurs BBN sont connectés à trois autres routeurs : R5, R6 (pour as
 - Ajouter un ordinateur (VPCS) et le connecter au switch
 - Exécuter le script **routerConfigGen.py** puis rentrer le numéro du SDIS à générer
 - Injecter le contenu des deux fichiers textes générés dans les routeurs correspondants au nom
-- Essayer d'exécuter la commande ip dhcp pour vérifier que la connexion est fonctionnelle
+- Essayer d'exécuter la commande **ip dhcp** sur le VPCS pour vérifier que la connexion est fonctionnelle
 
 ### Exemple pour le déploiement du SDIS-3
 ![image](https://user-images.githubusercontent.com/71138452/148044142-8fbc6384-a565-4f42-a54c-e25801f9182b.png)
