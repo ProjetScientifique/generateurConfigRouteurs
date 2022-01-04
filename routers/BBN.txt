@@ -1,0 +1,47 @@
+{# On suppose qu'on a un routeur par SDIS #}
+hostname BBN-R{{ SDISID+4 }}
+!
+interface Loopback0
+ip address 192.168.10.{{ SDISID+4 }} 255.255.255.255
+!
+{# Connexion au BBN-R5 #}
+interface FastEthernet0/0
+ip address 172.16.5{{ SDISID+4 }}.2 255.255.255.252
+ip ospf 100 area 0
+!
+{# Connexion au BBN-R6 #}
+interface FastEthernet0/1
+ip address 172.16.6{{ SDISID+4 }}.2 255.255.255.252
+ip ospf 100 area 0
+!
+interface FastEthernet3/0
+ip address 172.16.{{ SDISID+4 }}{{ SDISID+1 }}.2 255.255.255.252
+ip ospf 100 area 0
+!
+router ospf 100
+router-id 192.168.10.{{ SDISID+4 }}
+redistribute connected
+redistribute static subnets
+passive-interface FastEthernet3/0
+!
+{# Pour sécuriser l'accès #}
+service password-encryption
+enable secret enable
+username admin privilege 15 secret admin
+ip domain-name cpe.fr
+crypto key generate rsa modulus 1024
+ip ssh version 2
+ip ssh authentication-retries 3
+ip ssh time-out 120
+line vty 0 4
+login local
+transport input ssh
+exec-timeout 3
+line console 0
+login local
+exec-timeout 3
+banner login “Warning! Authorized personnel only.”
+login block-for 10 attempts 3 within 20
+login delay 10
+login on-failure log
+login on-success log
